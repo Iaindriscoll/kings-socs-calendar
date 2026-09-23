@@ -1,68 +1,39 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>King's College Doha | Upcoming Events</title>
 <style>
-:root{--red:#cf033c;--gold:#c2a572;--tint:#f9f6f1;--ink:#252525}
-*{box-sizing:border-box}
+:root{--red:#cf033c;--gold:#c2a572;--tint:#f9f6f1;--ink:#252525}*{box-sizing:border-box}
 html,body{margin:0;background:transparent;color:var(--ink);font-family:"Open Sans","Trebuchet MS",Arial,sans-serif}
-.shell{width:100%;padding:8px;display:flex;justify-content:center}
-.card{width:min(100%,760px);overflow:hidden;border:1px solid var(--gold);border-radius:14px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08)}
-.head{display:flex;align-items:center;justify-content:space-between;background:var(--red);color:#fff;padding:14px 20px}
-.head h1{margin:0;font-size:18px;letter-spacing:.11em}.head span{font-size:11px;letter-spacing:.08em;opacity:.9}
-#SOCSCalendar{padding:8px 18px 16px}
-#SOCSCalendar h1{color:var(--red)!important;margin:12px 0 8px!important;font-size:18px!important;font-weight:700!important}
-table.socs_day_events{width:100%!important;border-collapse:collapse!important;margin:0 0 12px!important}
-table.socs_day_events th{padding:8px!important;text-align:left!important;color:var(--red)!important;font-weight:700!important;background:var(--tint)!important}
-table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}
-table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}
-table.socs_day_events td.Venue{width:160px!important;color:#666!important}
-table.socs_day_events td.Title{font-weight:700!important}
-table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}
-a{color:var(--red)}
+.shell{width:100%;padding:8px;display:flex;justify-content:center}.card{width:min(100%,760px);overflow:hidden;border:1px solid var(--gold);border-radius:14px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.head{display:flex;align-items:center;justify-content:space-between;background:var(--red);color:#fff;padding:14px 20px}.head h1{margin:0;font-size:18px;letter-spacing:.11em}.head span{font-size:11px;letter-spacing:.08em;opacity:.9}
+#SOCSCalendar{padding:8px 18px 16px}#SOCSCalendar h1{color:var(--red)!important;margin:12px 0 8px!important;font-size:18px!important;font-weight:700!important}
+table.socs_day_events{width:100%!important;border-collapse:collapse!important;margin:0 0 12px!important}table.socs_day_events th{padding:8px!important;text-align:left!important;color:var(--red)!important;font-weight:700!important;background:var(--tint)!important}
+table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}table.socs_day_events td.Venue{width:160px!important;color:#666!important}table.socs_day_events td.Title{font-weight:700!important}table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}a{color:var(--red)}
 @media(max-width:600px){.head{padding:12px 14px}.head h1{font-size:15px}#SOCSCalendar{padding:6px 10px 12px}table.socs_day_events td{font-size:12px!important;padding:7px 5px!important}table.socs_day_events td.Venue{width:auto!important}.head span{display:none}}
-</style>
-</head>
-<body>
-<div class="shell"><div class="card">
-<div class="head"><h1>NEXT 7 DAYS AT KING'S</h1><span>KING'S COLLEGE DOHA</span></div>
-<div id="SOCSCalendar"><!-- SOCS Diary data will appear here --></div>
-</div></div>
-<script>
-var socsURL='https://www.socscms.com/socs/plugin/api.ashx?FT=&D=589-590-591-592-593-594-595-596-597-598-599-600-601-602-603&C=12769-12782-12756-12783-12774-12758-12781-12772-12767-12780-12757-12785-12778-12776-12759-12779-12770-12762-12777-12760-12773-12768-12786-12763-13996-12761-12764-12784-12765-12771-12766-12775&CC=&ET=Fixture-MultiSport-Training-Competition-SportEvent&Y=&H=&key=A27290A6-A93B-46E8-9E7A-FB53BED1AFE1';
-</script>
+</style></head><body>
+<div class="shell"><div class="card"><div class="head"><h1>NEXT 7 DAYS AT KING'S</h1><span>KING'S COLLEGE DOHA</span></div><div id="SOCSCalendar"></div></div></div>
+<script>var socsURL='https://www.socscms.com/socs/plugin/api.ashx?FT=&D=589-590-591-592-593-594-595-596-597-598-599-600-601-602-603&C=12769-12782-12756-12783-12774-12758-12781-12772-12767-12780-12757-12785-12778-12776-12759-12779-12770-12762-12777-12760-12773-12768-12786-12763-13996-12761-12764-12784-12765-12771-12766-12775&CC=&ET=Fixture-MultiSport-Training-Competition-SportEvent&Y=&H=&key=A27290A6-A93B-46E8-9E7A-FB53BED1AFE1';</script>
 <script src="https://www.socscms.com/socs/plugin/api.js"></script>
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- function norm(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
- const today=norm(new Date());
- const end=new Date(today); end.setDate(end.getDate()+6);
- function parseHeading(text){
-   const clean=text.replace(/\s+/g,' ').trim();
-   const candidates=[clean.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[,\s-]*/i,''),clean];
-   for(const s of candidates){const d=new Date(s);if(!isNaN(d)) return norm(d);}
-   const m=clean.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+(\d{4}))?/i);
-   if(m){const y=m[3]?+m[3]:today.getFullYear();const d=new Date(m[2]+' '+m[1]+' '+y);if(!isNaN(d))return norm(d);}
-   return null;
- }
+ function norm(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+ const today=norm(new Date()),end=new Date(today);end.setDate(end.getDate()+6);
+ function parseHeading(text){const clean=text.replace(/\s+/g,' ').trim(),c=[clean.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[,\s-]*/i,''),clean];for(const s of c){const d=new Date(s);if(!isNaN(d))return norm(d)}const m=clean.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+(\d{4}))?/i);if(m){const d=new Date(m[2]+' '+m[1]+' '+(m[3]||today.getFullYear()));if(!isNaN(d))return norm(d)}return null}
  function filter(){
    const children=Array.from(cal.children);
-   let show=true;
-   children.forEach(el=>{
-     if(/^H[1-6]$/.test(el.tagName)){
-       const d=parseHeading(el.textContent);
-       if(d) show=d>=today&&d<=end;
-     }
-     el.style.display=show?'':'none';
+   let groups=[],current=null;
+   children.forEach(el=>{if(/^H[1-6]$/.test(el.tagName)&&parseHeading(el.textContent)){current={date:parseHeading(el.textContent),els:[el]};groups.push(current)}else if(current)current.els.push(el)});
+   groups.forEach(g=>{
+     const inRange=g.date>=today&&g.date<=end;
+     const hasEvents=g.els.some(el=>el.matches&&el.matches('table.socs_day_events')&&el.querySelector('tbody tr, tr td')) ||
+       g.els.some(el=>el.querySelector&&el.querySelector('table.socs_day_events tbody tr, table.socs_day_events tr td'));
+     g.els.forEach(el=>el.style.display=(inRange&&hasEvents)?'':'none');
    });
  }
- const obs=new MutationObserver(filter);
- obs.observe(cal,{childList:true,subtree:true});
+ let busy=false;const obs=new MutationObserver(()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{filter();busy=false})});obs.observe(cal,{childList:true,subtree:true});
  setTimeout(filter,500);setTimeout(filter,1500);setTimeout(filter,3000);
 })();
-</script>
-</body>
-</html>
+</script></body></html>
