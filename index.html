@@ -19,19 +19,27 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- let expanded=false;
+ let clicked7=false, clickedMonth=false;
 
- function expandSOCS(){
-   if(expanded) return;
-   const link=[...cal.querySelectorAll('a')].find(a=>/view\s*7\s*days/i.test(a.textContent));
-   if(link){
-     expanded=true;
-     link.click();
+ function widenSOCS(){
+   const links=[...cal.querySelectorAll('a')];
+
+   /* SOCS initially supplies today only. First expand its native feed. */
+   if(!clicked7){
+     const seven=links.find(a=>/view\s*7\s*days/i.test(a.textContent));
+     if(seven){clicked7=true;seven.click();return true;}
    }
+
+   /* After the 7-day view loads, use SOCS's wider month/30-day control when offered. */
+   if(clicked7 && !clickedMonth){
+     const month=links.find(a=>/(view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view)/i.test(a.textContent));
+     if(month){clickedMonth=true;month.click();return true;}
+   }
+   return false;
  }
 
  function apply(){
-   expandSOCS();
+   if(widenSOCS()) return;
 
    const eventRows=[...cal.querySelectorAll('table.socs_day_events tr')].filter(row=>row.querySelector('td.Title'));
    eventRows.forEach((row,i)=>row.style.display=i<10?'':'none');
@@ -46,8 +54,10 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
      if(h) h.style.display=visible?'':'none';
    });
 
-   /* Remove SOCS navigation and empty-day messages from the compact homepage view. */
-   [...cal.querySelectorAll('a')].forEach(a=>{if(/view\s*7\s*days/i.test(a.textContent))a.style.display='none'});
+   /* Keep the homepage clean: hide SOCS range controls and empty-day messages. */
+   [...cal.querySelectorAll('a')].forEach(a=>{
+     if(/view\s*7\s*days|view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view/i.test(a.textContent)) a.style.display='none';
+   });
    [...cal.querySelectorAll('tr')].forEach(row=>{
      if(/no\s*events/i.test(row.textContent) && !row.querySelector('td.Title')) row.style.display='none';
    });
@@ -56,9 +66,9 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
  let timer;
  const observer=new MutationObserver(()=>{
    clearTimeout(timer);
-   timer=setTimeout(()=>{expandSOCS();apply()},120);
+   timer=setTimeout(()=>{widenSOCS();apply()},150);
  });
  observer.observe(cal,{childList:true,subtree:true});
- [300,800,1500,3000,5000,8000].forEach(ms=>setTimeout(()=>{expandSOCS();apply()},ms));
+ [300,800,1500,2500,4000,6000,9000].forEach(ms=>setTimeout(()=>{widenSOCS();apply()},ms));
 })();
 </script></body></html>
