@@ -10,7 +10,7 @@ html,body{margin:0;background:transparent;color:var(--ink);font-family:"Open San
 .head{display:flex;align-items:center;justify-content:space-between;background:var(--red);color:#fff;padding:14px 20px}.head h1{margin:0;font-size:18px;letter-spacing:.11em}.head span{font-size:11px;letter-spacing:.08em;opacity:.9}
 #SOCSCalendar{padding:8px 18px 16px}#SOCSCalendar h1{color:var(--red)!important;margin:12px 0 8px!important;font-size:18px!important;font-weight:700!important}
 table.socs_day_events{width:100%!important;border-collapse:collapse!important;margin:0 0 12px!important}table.socs_day_events th{padding:8px!important;text-align:left!important;color:var(--red)!important;font-weight:700!important;background:var(--tint)!important}
-table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}table.socs_day_events td.Venue{width:160px!important;color:#666!important}table.socs_day_events td.Title{font-weight:700!important}table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}a{color:var(--red)}
+table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}table.socs_day_events td.Venue{width:160px!important;color:#666!important}table.socs_day_events td.Title{font-weight:700!important}table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}a{color:var(--red)}.event-date{color:var(--red)!important;margin:14px 0 6px!important;font-size:17px!important}.event-item{display:flex;gap:16px;padding:10px 8px;border-bottom:1px solid #eee}.event-time{width:120px;flex:0 0 120px;font-weight:700;font-size:13px}.event-main{min-width:0}.event-title{font-weight:700;font-size:13px}.event-venue{margin-top:3px;color:#666;font-size:12px}
 @media(max-width:600px){.head{padding:12px 14px}.head h1{font-size:15px}#SOCSCalendar{padding:6px 10px 12px}table.socs_day_events td{font-size:12px!important;padding:7px 5px!important}table.socs_day_events td.Venue{width:auto!important}.head span{display:none}}
 </style></head><body>
 <div class="shell"><div class="card"><div class="head"><h1>NEXT 10 EVENTS AT KING'S</h1><span>KING'S COLLEGE DOHA</span></div><div id="SOCSCalendar"></div></div></div>
@@ -19,56 +19,74 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- let clicked7=false, clickedMonth=false;
+ let clicked7=false, clickedMonth=false, rendered=false;
 
  function widenSOCS(){
    const links=[...cal.querySelectorAll('a')];
-
-   /* SOCS initially supplies today only. First expand its native feed. */
    if(!clicked7){
      const seven=links.find(a=>/view\s*7\s*days/i.test(a.textContent));
      if(seven){clicked7=true;seven.click();return true;}
    }
-
-   /* After the 7-day view loads, use SOCS's wider month/30-day control when offered. */
    if(clicked7 && !clickedMonth){
-     const month=links.find(a=>/(view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view)/i.test(a.textContent));
-     if(month){clickedMonth=true;month.click();return true;}
+     const month=links.find(a=>/(view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view|view\s*today)/i.test(a.textContent));
+     /* "View Today" proves SOCS has already switched away from today-only mode.
+        Do not click it; use the currently loaded wider result set. */
+     if(month && !/view\s*today/i.test(month.textContent)){clickedMonth=true;month.click();return true;}
+     if(links.some(a=>/view\s*today/i.test(a.textContent))) clickedMonth=true;
    }
    return false;
  }
 
- function apply(){
-   if(widenSOCS()) return;
+ function dateFor(row){
+   const table=row.closest('table');
+   if(!table)return '';
+   let n=table.previousElementSibling;
+   while(n){
+     if(/^H[1-6]$/.test(n.tagName)) return n.textContent.trim();
+     n=n.previousElementSibling;
+   }
+   const parent=table.parentElement;
+   if(parent){
+     const h=parent.querySelector('h1,h2,h3,h4,h5,h6');
+     if(h)return h.textContent.trim();
+   }
+   return '';
+ }
 
-   const eventRows=[...cal.querySelectorAll('table.socs_day_events tr')].filter(row=>row.querySelector('td.Title'));
-   eventRows.forEach((row,i)=>row.style.display=i<10?'':'none');
+ function render(){
+   if(rendered)return;
+   if(widenSOCS())return;
 
-   [...cal.querySelectorAll('table.socs_day_events')].forEach(table=>{
-     const rows=[...table.querySelectorAll('tr')].filter(row=>row.querySelector('td.Title'));
-     const visible=rows.some(row=>row.style.display!=='none');
-     table.style.display=visible?'':'none';
+   const rows=[...cal.querySelectorAll('table.socs_day_events tr')].filter(r=>r.querySelector('td.Title'));
+   if(!rows.length)return;
 
-     let h=table.previousElementSibling;
-     while(h && !/^H[1-6]$/.test(h.tagName)) h=h.previousElementSibling;
-     if(h) h.style.display=visible?'':'none';
+   const events=rows.slice(0,10).map(r=>({
+     date:dateFor(r),
+     time:(r.querySelector('td.Timings')||{}).textContent?.trim()||'',
+     venue:(r.querySelector('td.Venue')||{}).textContent?.trim()||'',
+     title:(r.querySelector('td.Title')||{}).textContent?.trim()||''
+   }));
+
+   let html='',lastDate='';
+   events.forEach(e=>{
+     if(e.date!==lastDate){
+       html+='<h1 class="event-date">'+escapeHtml(e.date)+'</h1>';
+       lastDate=e.date;
+     }
+     html+='<div class="event-item"><div class="event-time">'+escapeHtml(e.time)+'</div><div class="event-main"><div class="event-title">'+escapeHtml(e.title)+'</div>'+(e.venue?'<div class="event-venue">'+escapeHtml(e.venue)+'</div>':'')+'</div></div>';
    });
+   cal.innerHTML=html;
+   rendered=true;
+   observer.disconnect();
+ }
 
-   /* Keep the homepage clean: hide SOCS range controls and empty-day messages. */
-   [...cal.querySelectorAll('a')].forEach(a=>{
-     if(/view\s*7\s*days|view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view/i.test(a.textContent)) a.style.display='none';
-   });
-   [...cal.querySelectorAll('tr')].forEach(row=>{
-     if(/no\s*events/i.test(row.textContent) && !row.querySelector('td.Title')) row.style.display='none';
-   });
+ function escapeHtml(s){
+   return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  }
 
  let timer;
- const observer=new MutationObserver(()=>{
-   clearTimeout(timer);
-   timer=setTimeout(()=>{widenSOCS();apply()},150);
- });
+ const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(render,180)});
  observer.observe(cal,{childList:true,subtree:true});
- [300,800,1500,2500,4000,6000,9000].forEach(ms=>setTimeout(()=>{widenSOCS();apply()},ms));
+ [400,900,1600,2800,4500,7000,10000].forEach(ms=>setTimeout(render,ms));
 })();
 </script></body></html>
