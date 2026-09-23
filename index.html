@@ -20,20 +20,43 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 (function(){
  const cal=document.getElementById('SOCSCalendar');
  function norm(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
- const today=norm(new Date()),end=new Date(today);end.setDate(end.getDate()+6);
- function parseHeading(text){const clean=text.replace(/\s+/g,' ').trim(),c=[clean.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[,\s-]*/i,''),clean];for(const s of c){const d=new Date(s);if(!isNaN(d))return norm(d)}const m=clean.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+(\d{4}))?/i);if(m){const d=new Date(m[2]+' '+m[1]+' '+(m[3]||today.getFullYear()));if(!isNaN(d))return norm(d)}return null}
- function filter(){
-   const children=Array.from(cal.children);
-   let groups=[],current=null;
-   children.forEach(el=>{if(/^H[1-6]$/.test(el.tagName)&&parseHeading(el.textContent)){current={date:parseHeading(el.textContent),els:[el]};groups.push(current)}else if(current)current.els.push(el)});
-   groups.forEach(g=>{
-     const inRange=g.date>=today&&g.date<=end;
-     const hasEvents=g.els.some(el=>el.matches&&el.matches('table.socs_day_events')&&el.querySelector('tbody tr, tr td')) ||
-       g.els.some(el=>el.querySelector&&el.querySelector('table.socs_day_events tbody tr, table.socs_day_events tr td'));
-     g.els.forEach(el=>el.style.display=(inRange&&hasEvents)?'':'none');
+ const today=norm(new Date()), last=new Date(today); last.setDate(last.getDate()+6);
+
+ function parseDate(text){
+   const s=(text||'').replace(/\s+/g,' ').trim();
+   const m=s.match(/(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+(\d{4}))?/i);
+   if(!m)return null;
+   let y=m[3]?Number(m[3]):today.getFullYear();
+   let d=norm(new Date(m[2]+' '+m[1]+' '+y));
+   if(!m[3] && d<new Date(today.getFullYear()-0,0,1) && today.getMonth()>9 && d.getMonth()<2)d=norm(new Date(m[2]+' '+m[1]+' '+(y+1)));
+   return isNaN(d)?null:d;
+ }
+
+ function apply(){
+   const headings=[...cal.querySelectorAll('h1,h2,h3,h4,h5,h6')];
+   headings.forEach(h=>{
+     const d=parseDate(h.textContent);
+     if(!d)return;
+
+     let nodes=[], n=h.nextElementSibling;
+     while(n && !/^H[1-6]$/.test(n.tagName)){nodes.push(n);n=n.nextElementSibling}
+
+     const tables=nodes.filter(x=>x.matches('table.socs_day_events')).concat(
+       nodes.flatMap(x=>[...x.querySelectorAll('table.socs_day_events')])
+     );
+     const hasRealEvent=tables.some(t=>
+       t.querySelector('td.Title') ||
+       [...t.querySelectorAll('tr')].some(r=>r.querySelectorAll('td').length>0 && r.textContent.trim().length>0)
+     );
+     const show=d>=today && d<=last && hasRealEvent;
+     h.style.display=show?'':'none';
+     nodes.forEach(x=>x.style.display=show?'':'none');
    });
  }
- let busy=false;const obs=new MutationObserver(()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{filter();busy=false})});obs.observe(cal,{childList:true,subtree:true});
- setTimeout(filter,500);setTimeout(filter,1500);setTimeout(filter,3000);
+
+ let timer;
+ const obs=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,80)});
+ obs.observe(cal,{childList:true,subtree:true});
+ [250,750,1500,3000,5000].forEach(ms=>setTimeout(apply,ms));
 })();
 </script></body></html>
