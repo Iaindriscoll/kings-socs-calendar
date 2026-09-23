@@ -19,47 +19,46 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
+ let expanded=false;
+
+ function expandSOCS(){
+   if(expanded) return;
+   const link=[...cal.querySelectorAll('a')].find(a=>/view\s*7\s*days/i.test(a.textContent));
+   if(link){
+     expanded=true;
+     link.click();
+   }
+ }
 
  function apply(){
-   const tables=[...cal.querySelectorAll('table.socs_day_events')];
-   let count=0;
+   expandSOCS();
 
-   tables.forEach(table=>{
-     const eventRows=[...table.querySelectorAll('tr')].filter(row=>row.querySelector('td.Title'));
-     eventRows.forEach(row=>{
-       const show=count<10;
-       row.style.display=show?'':'none';
-       if(show) count++;
-     });
+   const eventRows=[...cal.querySelectorAll('table.socs_day_events tr')].filter(row=>row.querySelector('td.Title'));
+   eventRows.forEach((row,i)=>row.style.display=i<10?'':'none');
 
-     /* Keep structural/header rows only when this day has at least one of the next 10 events. */
-     const visibleEvents=eventRows.filter(row=>row.style.display!=='none');
-     const showTable=visibleEvents.length>0;
-     table.style.display=showTable?'':'none';
+   [...cal.querySelectorAll('table.socs_day_events')].forEach(table=>{
+     const rows=[...table.querySelectorAll('tr')].filter(row=>row.querySelector('td.Title'));
+     const visible=rows.some(row=>row.style.display!=='none');
+     table.style.display=visible?'':'none';
 
-     /* SOCS date headings are normally immediately before each day's event table.
-        Search backwards through siblings so wrappers/spacing do not break the match. */
-     let p=table.previousElementSibling;
-     while(p && !/^H[1-6]$/.test(p.tagName)) p=p.previousElementSibling;
-     if(p) p.style.display=showTable?'':'none';
+     let h=table.previousElementSibling;
+     while(h && !/^H[1-6]$/.test(h.tagName)) h=h.previousElementSibling;
+     if(h) h.style.display=visible?'':'none';
    });
 
-   /* Remove any orphan date headings with no visible SOCS table before the next heading. */
-   [...cal.querySelectorAll('h1,h2,h3,h4,h5,h6')].forEach(h=>{
-     let n=h.nextElementSibling, visible=false;
-     while(n && !/^H[1-6]$/.test(n.tagName)){
-       if(n.matches && n.matches('table.socs_day_events') && n.style.display!=='none') visible=true;
-       if(n.querySelector && [...n.querySelectorAll('table.socs_day_events')].some(t=>t.style.display!=='none')) visible=true;
-       n=n.nextElementSibling;
-     }
-     h.style.display=visible?'':'none';
+   /* Remove SOCS navigation and empty-day messages from the compact homepage view. */
+   [...cal.querySelectorAll('a')].forEach(a=>{if(/view\s*7\s*days/i.test(a.textContent))a.style.display='none'});
+   [...cal.querySelectorAll('tr')].forEach(row=>{
+     if(/no\s*events/i.test(row.textContent) && !row.querySelector('td.Title')) row.style.display='none';
    });
  }
 
  let timer;
- const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,100)});
+ const observer=new MutationObserver(()=>{
+   clearTimeout(timer);
+   timer=setTimeout(()=>{expandSOCS();apply()},120);
+ });
  observer.observe(cal,{childList:true,subtree:true});
- window.addEventListener('load',()=>setTimeout(apply,100));
- [300,800,1500,3000,5000,8000].forEach(ms=>setTimeout(apply,ms));
+ [300,800,1500,3000,5000,8000].forEach(ms=>setTimeout(()=>{expandSOCS();apply()},ms));
 })();
 </script></body></html>
