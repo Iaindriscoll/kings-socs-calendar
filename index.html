@@ -22,39 +22,44 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 
  function apply(){
    const tables=[...cal.querySelectorAll('table.socs_day_events')];
-   let remaining=10;
+   let count=0;
 
    tables.forEach(table=>{
-     const rows=[...table.querySelectorAll('tr')];
-     const eventRows=rows.filter(r=>r.querySelector('td.Title') || (r.querySelectorAll('td').length>0 && r.textContent.trim().length>0));
-
+     const eventRows=[...table.querySelectorAll('tr')].filter(row=>row.querySelector('td.Title'));
      eventRows.forEach(row=>{
-       const show=remaining>0;
+       const show=count<10;
        row.style.display=show?'':'none';
-       if(show) remaining--;
+       if(show) count++;
      });
 
-     const visible=eventRows.some(r=>r.style.display!=='none');
-     table.style.display=visible?'':'none';
+     /* Keep structural/header rows only when this day has at least one of the next 10 events. */
+     const visibleEvents=eventRows.filter(row=>row.style.display!=='none');
+     const showTable=visibleEvents.length>0;
+     table.style.display=showTable?'':'none';
 
-     let h=table.previousElementSibling;
-     while(h && !/^H[1-6]$/.test(h.tagName)) h=h.previousElementSibling;
-     if(h) h.style.display=visible?'':'none';
+     /* SOCS date headings are normally immediately before each day's event table.
+        Search backwards through siblings so wrappers/spacing do not break the match. */
+     let p=table.previousElementSibling;
+     while(p && !/^H[1-6]$/.test(p.tagName)) p=p.previousElementSibling;
+     if(p) p.style.display=showTable?'':'none';
    });
 
+   /* Remove any orphan date headings with no visible SOCS table before the next heading. */
    [...cal.querySelectorAll('h1,h2,h3,h4,h5,h6')].forEach(h=>{
-     let n=h.nextElementSibling, hasVisible=false;
+     let n=h.nextElementSibling, visible=false;
      while(n && !/^H[1-6]$/.test(n.tagName)){
-       if(n.matches('table.socs_day_events') && n.style.display!=='none') hasVisible=true;
+       if(n.matches && n.matches('table.socs_day_events') && n.style.display!=='none') visible=true;
+       if(n.querySelector && [...n.querySelectorAll('table.socs_day_events')].some(t=>t.style.display!=='none')) visible=true;
        n=n.nextElementSibling;
      }
-     if(!hasVisible) h.style.display='none';
+     h.style.display=visible?'':'none';
    });
  }
 
  let timer;
- const obs=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,80)});
- obs.observe(cal,{childList:true,subtree:true});
- [250,750,1500,3000,5000].forEach(ms=>setTimeout(apply,ms));
+ const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,100)});
+ observer.observe(cal,{childList:true,subtree:true});
+ window.addEventListener('load',()=>setTimeout(apply,100));
+ [300,800,1500,3000,5000,8000].forEach(ms=>setTimeout(apply,ms));
 })();
 </script></body></html>
