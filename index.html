@@ -19,19 +19,26 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- let rendered=false;
+ let expansionStarted=false, rendered=false, lastMutation=Date.now();
 
  function esc(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+
+ function expand(){
+   if(expansionStarted)return;
+   const link=[...cal.querySelectorAll('a')].find(a=>/view\s*7\s*days/i.test(a.textContent));
+   if(link){
+     expansionStarted=true;
+     link.click();
+   }
+ }
 
  function getDate(table){
    let n=table.previousElementSibling;
    while(n){
-     if(/^H[1-6]$/.test(n.tagName)) return n.textContent.trim();
+     if(/^H[1-6]$/.test(n.tagName))return n.textContent.replace(/\s+/g,' ').trim();
      n=n.previousElementSibling;
    }
-   const p=table.parentElement;
-   const heads=p?[...p.querySelectorAll('h1,h2,h3,h4,h5,h6')]:[];
-   return heads.length?heads[heads.length-1].textContent.trim():'';
+   return '';
  }
 
  function collect(){
@@ -43,29 +50,38 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
        if(cells.length<2)return;
        const vals=cells.map(td=>td.textContent.replace(/\s+/g,' ').trim());
        const joined=vals.join(' ').trim();
-       if(!joined || /^no events$/i.test(joined))return;
+       if(!joined || /no\s*events/i.test(joined))return;
        if(/start\s*end\s*time/i.test(joined) && /event/i.test(joined))return;
-
-       /* SOCS renders event rows as Time | Location | Event. */
        const time=vals[0]||'';
-       const venue=vals.length>=3?vals[1]:'';
-       const title=vals.length>=3?vals.slice(2).join(' '):vals.slice(1).join(' ');
-       if(!title || /^no events$/i.test(title))return;
-       events.push({date,time,venue,title});
+       const venue=cells.length>=3?(vals[1]||''):'';
+       const title=cells.length>=3?vals.slice(2).join(' '):vals.slice(1).join(' ');
+       if(title)events.push({date,time,venue,title});
      });
    });
    return events;
  }
 
- function render(){
+ function finish(){
    if(rendered)return;
-   const events=collect();
+   expand();
+
+   /* Wait for SOCS to replace today's view with the expanded view.
+      "View Today" is the reliable signal that expansion has completed. */
+   const expanded=[...cal.querySelectorAll('a')].some(a=>/view\s*today/i.test(a.textContent));
+   if(!expanded)return;
+
+   /* Allow the expanded DOM to settle before reading it. */
+   if(Date.now()-lastMutation<300)return;
+
+   const events=collect().slice(0,10);
    if(!events.length)return;
 
-   const chosen=events.slice(0,10);
-   let html='',last='';
-   chosen.forEach(e=>{
-     if(e.date!==last){html+='<h1 class="event-date">'+esc(e.date)+'</h1>';last=e.date;}
+   let html='',lastDate='';
+   events.forEach(e=>{
+     if(e.date && e.date!==lastDate){
+       html+='<h1 class="event-date">'+esc(e.date)+'</h1>';
+       lastDate=e.date;
+     }
      html+='<div class="event-item"><div class="event-time">'+esc(e.time)+'</div><div class="event-main"><div class="event-title">'+esc(e.title)+'</div>'+(e.venue?'<div class="event-venue">'+esc(e.venue)+'</div>':'')+'</div></div>';
    });
    cal.innerHTML=html;
@@ -73,9 +89,13 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
    observer.disconnect();
  }
 
- let timer;
- const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(render,350)});
+ const observer=new MutationObserver(()=>{
+   lastMutation=Date.now();
+   if(!expansionStarted)expand();
+   clearTimeout(window.__socsCleanTimer);
+   window.__socsCleanTimer=setTimeout(finish,450);
+ });
  observer.observe(cal,{childList:true,subtree:true});
- [1200,2500,4500,7000,10000].forEach(ms=>setTimeout(render,ms));
+ [250,600,1200,2000,3500,5500,8000,12000].forEach(ms=>setTimeout(()=>{expand();finish()},ms));
 })();
 </script></body></html>
