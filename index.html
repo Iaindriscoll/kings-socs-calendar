@@ -98,4 +98,30 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 
  [300,700,1200,1800,2600,3600,5000,7000,9500,12500].forEach(ms=>setTimeout(build,ms));
 })();
-</script></body></html>
+</script><script>
+(function(){
+ const cal=document.getElementById('SOCSCalendar');
+ function diagnostic(){
+   const seven=[...cal.querySelectorAll('a')].find(a=>/view\s*7\s*days/i.test(a.textContent));
+   const info={
+     timestamp:new Date().toISOString(),
+     calendarHTML:cal.innerHTML,
+     sevenDayLink:seven?{
+       outerHTML:seven.outerHTML,
+       href:seven.getAttribute('href'),
+       onclick:seven.getAttribute('onclick'),
+       id:seven.id,
+       className:seven.className,
+       dataset:Object.assign({},seven.dataset)
+     }:null,
+     globals:Object.keys(window).filter(k=>/socs|calendar|diary|event/i.test(k)).sort()
+   };
+   window.__KINGS_SOCS_DIAGNOSTIC=info;
+   console.log('KINGS_SOCS_DIAGNOSTIC',info);
+ }
+ const o=new MutationObserver(()=>setTimeout(diagnostic,100));
+ o.observe(cal,{childList:true,subtree:true});
+ [1000,3000,6000].forEach(ms=>setTimeout(diagnostic,ms));
+})();
+</script>
+</body></html>
