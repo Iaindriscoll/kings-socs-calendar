@@ -13,44 +13,42 @@ table.socs_day_events{width:100%!important;border-collapse:collapse!important;ma
 table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}table.socs_day_events td.Venue{width:160px!important;color:#666!important}table.socs_day_events td.Title{font-weight:700!important}table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}a{color:var(--red)}
 @media(max-width:600px){.head{padding:12px 14px}.head h1{font-size:15px}#SOCSCalendar{padding:6px 10px 12px}table.socs_day_events td{font-size:12px!important;padding:7px 5px!important}table.socs_day_events td.Venue{width:auto!important}.head span{display:none}}
 </style></head><body>
-<div class="shell"><div class="card"><div class="head"><h1>NEXT 7 DAYS AT KING'S</h1><span>KING'S COLLEGE DOHA</span></div><div id="SOCSCalendar"></div></div></div>
+<div class="shell"><div class="card"><div class="head"><h1>NEXT 10 EVENTS AT KING'S</h1><span>KING'S COLLEGE DOHA</span></div><div id="SOCSCalendar"></div></div></div>
 <script>var socsURL='https://www.socscms.com/socs/plugin/api.ashx?FT=&D=589-590-591-592-593-594-595-596-597-598-599-600-601-602-603&C=12769-12782-12756-12783-12774-12758-12781-12772-12767-12780-12757-12785-12778-12776-12759-12779-12770-12762-12777-12760-12773-12768-12786-12763-13996-12761-12764-12784-12765-12771-12766-12775&CC=&ET=Fixture-MultiSport-Training-Competition-SportEvent&Y=&H=&key=A27290A6-A93B-46E8-9E7A-FB53BED1AFE1';</script>
 <script src="https://www.socscms.com/socs/plugin/api.js"></script>
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- function norm(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
- const today=norm(new Date()), last=new Date(today); last.setDate(last.getDate()+6);
-
- function parseDate(text){
-   const s=(text||'').replace(/\s+/g,' ').trim();
-   const m=s.match(/(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+(\d{4}))?/i);
-   if(!m)return null;
-   let y=m[3]?Number(m[3]):today.getFullYear();
-   let d=norm(new Date(m[2]+' '+m[1]+' '+y));
-   if(!m[3] && d<new Date(today.getFullYear()-0,0,1) && today.getMonth()>9 && d.getMonth()<2)d=norm(new Date(m[2]+' '+m[1]+' '+(y+1)));
-   return isNaN(d)?null:d;
- }
 
  function apply(){
-   const headings=[...cal.querySelectorAll('h1,h2,h3,h4,h5,h6')];
-   headings.forEach(h=>{
-     const d=parseDate(h.textContent);
-     if(!d)return;
+   const tables=[...cal.querySelectorAll('table.socs_day_events')];
+   let remaining=10;
 
-     let nodes=[], n=h.nextElementSibling;
-     while(n && !/^H[1-6]$/.test(n.tagName)){nodes.push(n);n=n.nextElementSibling}
+   tables.forEach(table=>{
+     const rows=[...table.querySelectorAll('tr')];
+     const eventRows=rows.filter(r=>r.querySelector('td.Title') || (r.querySelectorAll('td').length>0 && r.textContent.trim().length>0));
 
-     const tables=nodes.filter(x=>x.matches('table.socs_day_events')).concat(
-       nodes.flatMap(x=>[...x.querySelectorAll('table.socs_day_events')])
-     );
-     const hasRealEvent=tables.some(t=>
-       t.querySelector('td.Title') ||
-       [...t.querySelectorAll('tr')].some(r=>r.querySelectorAll('td').length>0 && r.textContent.trim().length>0)
-     );
-     const show=d>=today && d<=last && hasRealEvent;
-     h.style.display=show?'':'none';
-     nodes.forEach(x=>x.style.display=show?'':'none');
+     eventRows.forEach(row=>{
+       const show=remaining>0;
+       row.style.display=show?'':'none';
+       if(show) remaining--;
+     });
+
+     const visible=eventRows.some(r=>r.style.display!=='none');
+     table.style.display=visible?'':'none';
+
+     let h=table.previousElementSibling;
+     while(h && !/^H[1-6]$/.test(h.tagName)) h=h.previousElementSibling;
+     if(h) h.style.display=visible?'':'none';
+   });
+
+   [...cal.querySelectorAll('h1,h2,h3,h4,h5,h6')].forEach(h=>{
+     let n=h.nextElementSibling, hasVisible=false;
+     while(n && !/^H[1-6]$/.test(n.tagName)){
+       if(n.matches('table.socs_day_events') && n.style.display!=='none') hasVisible=true;
+       n=n.nextElementSibling;
+     }
+     if(!hasVisible) h.style.display='none';
    });
  }
 
