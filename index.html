@@ -19,74 +19,63 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 <script>
 (function(){
  const cal=document.getElementById('SOCSCalendar');
- let clicked7=false, clickedMonth=false, rendered=false;
+ let rendered=false;
 
- function widenSOCS(){
-   const links=[...cal.querySelectorAll('a')];
-   if(!clicked7){
-     const seven=links.find(a=>/view\s*7\s*days/i.test(a.textContent));
-     if(seven){clicked7=true;seven.click();return true;}
-   }
-   if(clicked7 && !clickedMonth){
-     const month=links.find(a=>/(view\s*(?:30|31)\s*days|view\s*(?:a\s*)?month|next\s*(?:30|31)\s*days|month\s*view|view\s*today)/i.test(a.textContent));
-     /* "View Today" proves SOCS has already switched away from today-only mode.
-        Do not click it; use the currently loaded wider result set. */
-     if(month && !/view\s*today/i.test(month.textContent)){clickedMonth=true;month.click();return true;}
-     if(links.some(a=>/view\s*today/i.test(a.textContent))) clickedMonth=true;
-   }
-   return false;
- }
+ function esc(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 
- function dateFor(row){
-   const table=row.closest('table');
-   if(!table)return '';
+ function getDate(table){
    let n=table.previousElementSibling;
    while(n){
      if(/^H[1-6]$/.test(n.tagName)) return n.textContent.trim();
      n=n.previousElementSibling;
    }
-   const parent=table.parentElement;
-   if(parent){
-     const h=parent.querySelector('h1,h2,h3,h4,h5,h6');
-     if(h)return h.textContent.trim();
-   }
-   return '';
+   const p=table.parentElement;
+   const heads=p?[...p.querySelectorAll('h1,h2,h3,h4,h5,h6')]:[];
+   return heads.length?heads[heads.length-1].textContent.trim():'';
+ }
+
+ function collect(){
+   const events=[];
+   [...cal.querySelectorAll('table.socs_day_events')].forEach(table=>{
+     const date=getDate(table);
+     [...table.querySelectorAll('tr')].forEach(row=>{
+       const cells=[...row.querySelectorAll('td')];
+       if(cells.length<2)return;
+       const vals=cells.map(td=>td.textContent.replace(/\s+/g,' ').trim());
+       const joined=vals.join(' ').trim();
+       if(!joined || /^no events$/i.test(joined))return;
+       if(/start\s*end\s*time/i.test(joined) && /event/i.test(joined))return;
+
+       /* SOCS renders event rows as Time | Location | Event. */
+       const time=vals[0]||'';
+       const venue=vals.length>=3?vals[1]:'';
+       const title=vals.length>=3?vals.slice(2).join(' '):vals.slice(1).join(' ');
+       if(!title || /^no events$/i.test(title))return;
+       events.push({date,time,venue,title});
+     });
+   });
+   return events;
  }
 
  function render(){
    if(rendered)return;
-   if(widenSOCS())return;
+   const events=collect();
+   if(!events.length)return;
 
-   const rows=[...cal.querySelectorAll('table.socs_day_events tr')].filter(r=>r.querySelector('td.Title'));
-   if(!rows.length)return;
-
-   const events=rows.slice(0,10).map(r=>({
-     date:dateFor(r),
-     time:(r.querySelector('td.Timings')||{}).textContent?.trim()||'',
-     venue:(r.querySelector('td.Venue')||{}).textContent?.trim()||'',
-     title:(r.querySelector('td.Title')||{}).textContent?.trim()||''
-   }));
-
-   let html='',lastDate='';
-   events.forEach(e=>{
-     if(e.date!==lastDate){
-       html+='<h1 class="event-date">'+escapeHtml(e.date)+'</h1>';
-       lastDate=e.date;
-     }
-     html+='<div class="event-item"><div class="event-time">'+escapeHtml(e.time)+'</div><div class="event-main"><div class="event-title">'+escapeHtml(e.title)+'</div>'+(e.venue?'<div class="event-venue">'+escapeHtml(e.venue)+'</div>':'')+'</div></div>';
+   const chosen=events.slice(0,10);
+   let html='',last='';
+   chosen.forEach(e=>{
+     if(e.date!==last){html+='<h1 class="event-date">'+esc(e.date)+'</h1>';last=e.date;}
+     html+='<div class="event-item"><div class="event-time">'+esc(e.time)+'</div><div class="event-main"><div class="event-title">'+esc(e.title)+'</div>'+(e.venue?'<div class="event-venue">'+esc(e.venue)+'</div>':'')+'</div></div>';
    });
    cal.innerHTML=html;
    rendered=true;
    observer.disconnect();
  }
 
- function escapeHtml(s){
-   return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
- }
-
  let timer;
- const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(render,180)});
+ const observer=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(render,350)});
  observer.observe(cal,{childList:true,subtree:true});
- [400,900,1600,2800,4500,7000,10000].forEach(ms=>setTimeout(render,ms));
+ [1200,2500,4500,7000,10000].forEach(ms=>setTimeout(render,ms));
 })();
 </script></body></html>
