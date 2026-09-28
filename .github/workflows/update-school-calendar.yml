@@ -1,0 +1,25 @@
+name: Update School Calendar
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch published Outlook calendar
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 --user-agent "Mozilla/5.0"             "https://outlook.office365.com/owa/calendar/daf767063fd2490380cf3509094c4ba3@kingscollegedoha.com/fc9c0064534c4cdfbbf718ceca68d9206699124755701241663/calendar.ics"             --output calendar.ics
+      - name: Commit calendar
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add calendar.ics
+          git diff --cached --quiet && exit 0
+          git commit -m "Update school calendar"
+          git push
