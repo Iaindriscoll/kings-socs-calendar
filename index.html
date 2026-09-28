@@ -16,7 +16,7 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 .columns{display:grid;grid-template-columns:1fr 1fr;gap:0}.column{min-width:0}.column+.column{border-left:1px solid var(--gold)}.column-head{background:var(--tint);color:var(--red);font-weight:700;letter-spacing:.06em;padding:10px 18px;border-bottom:1px solid #eee}.ics-list{padding:8px 18px 16px}.ics-date{color:var(--red);margin:12px 0 8px;font-size:18px;font-weight:700}.ics-item{padding:10px 8px;border-bottom:1px solid #eee}.ics-time{font-weight:700;font-size:13px}.ics-title{font-weight:700;font-size:13px;margin-top:2px}.ics-location{margin-top:3px;color:#666;font-size:12px}.ics-empty{padding:18px;color:#666;font-size:13px}
 @media(max-width:700px){.columns{grid-template-columns:1fr}.column+.column{border-left:0;border-top:1px solid var(--gold)}}
 </style></head><body>
-<div class="shell"><div class="card"><div class="head"><h1>UPCOMING EVENTS</h1><span>KING'S COLLEGE DOHA</span></div><div class="columns"><section class="column"><div class="column-head">EVENTS</div><div id="SOCSCalendar"></div></section><section class="column"><div class="column-head">SCHOOL CALENDAR</div><div id="ICSCalendar" class="ics-list"><div class="ics-empty">School calendar coming soon.</div></div></section></div></div></div>
+<div class="shell"><div class="card"><div class="head"><h1>UPCOMING EVENTS</h1><span>KING'S COLLEGE DOHA</span></div><div class="columns"><section class="column"><div class="column-head">EVENTS</div><div id="SOCSCalendar"></div></section><section class="column"><div class="column-head">SCHOOL CALENDAR</div><div id="ICSCalendar" class="ics-list"><div class="ics-empty">Loading calendar…</div></div></section></div></div></div>
 <script>var socsURL='https://www.socscms.com/socs/plugin/api.ashx?FT=&D=589-590-591-592-593-594-595-596-597-598-599-600-601-602-603&C=12769-12782-12756-12783-12774-12758-12781-12772-12767-12780-12757-12785-12778-12776-12759-12779-12770-12762-12777-12760-12773-12768-12786-12763-13996-12761-12764-12784-12765-12771-12766-12775&CC=&ET=Fixture-MultiSport-Training-Competition-SportEvent&Y=&H=&key=A27290A6-A93B-46E8-9E7A-FB53BED1AFE1';</script>
 <script src="https://www.socscms.com/socs/plugin/api.js"></script>
 <script>
@@ -128,4 +128,27 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 })();
 </script>
 
+<script>
+(function(){
+ const box=document.getElementById('ICSCalendar');
+ const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const fmtDate=d=>new Intl.DateTimeFormat('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Qatar'}).format(d);
+ const fmtTime=d=>new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Qatar'}).format(d);
+ fetch('calendar.json?ts='+Date.now()).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{
+   const now=new Date(), events=(data.events||[]).filter(e=>new Date(e.end||e.start)>=now).slice(0,10);
+   if(!events.length){box.innerHTML='<div class="ics-empty">No upcoming calendar events.</div>';return}
+   let out='',last='';
+   events.forEach(e=>{
+     const s=new Date(e.start), en=e.end?new Date(e.end):null, date=fmtDate(s);
+     if(date!==last){out+='<div class="ics-date">'+esc(date)+'</div>';last=date}
+     const time=e.allDay?'All day':fmtTime(s)+(en?' to '+fmtTime(en):'');
+     out+='<div class="ics-item"><div class="ics-time">'+esc(time)+'</div><div class="ics-title">'+esc(e.title)+'</div>'+(e.location?'<div class="ics-location">'+esc(e.location)+'</div>':'')+'</div>';
+   });
+   box.innerHTML=out;
+   parent.postMessage({type:'kings-calendar-height',height:document.documentElement.scrollHeight},'*');
+ }).catch(()=>box.innerHTML='<div class="ics-empty">Calendar temporarily unavailable.</div>');
+ const sendHeight=()=>parent.postMessage({type:'kings-calendar-height',height:document.documentElement.scrollHeight},'*');
+ new ResizeObserver(sendHeight).observe(document.body); window.addEventListener('load',sendHeight);
+})();
+</script>
 </body></html>
