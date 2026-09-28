@@ -131,12 +131,11 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
 (function(){
  const box=document.getElementById('ICSCalendar');
  function esc(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
- const feed='https://outlook.office365.com/owa/calendar/daf767063fd2490380cf3509094c4ba3@kingscollegedoha.com/fc9c0064534c4cdfbbf718ceca68d9206699124755701241663/calendar.ics';
- const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent(feed);
+ const feed='calendar.ics?ts='+Date.now();
  function prop(block,name){const m=block.match(new RegExp('^'+name+'(?:;[^:]*)?:(.*)$','m'));return m?m[1].trim():'';}
  function dt(v){if(!v)return null;const z=v.endsWith('Z'),s=v.replace(/Z$/,'');const m=s.match(/^(\\d{4})(\\d{2})(\\d{2})(?:T(\\d{2})(\\d{2})(\\d{2}))?/);if(!m)return null;return z?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0))):new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0));}
  function clean(v){return (v||'').replace(/\\\\n/g,' ').replace(/\\\\,/g,',').replace(/\\\\;/g,';');}
- fetch(proxy).then(r=>{if(!r.ok)throw new Error();return r.text();}).then(raw=>{
+ fetch(feed).then(r=>{if(!r.ok)throw new Error();return r.text();}).then(raw=>{
    raw=raw.replace(/\\r?\\n[ \\t]/g,''); const now=new Date(),events=[];
    (raw.match(/BEGIN:VEVENT[\\s\\S]*?END:VEVENT/g)||[]).forEach(b=>{
      const start=dt(prop(b,'DTSTART')),end=dt(prop(b,'DTEND')); if(!start||((end||start)<now))return;
