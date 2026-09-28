@@ -12,8 +12,11 @@ html,body{margin:0;background:transparent;color:var(--ink);font-family:"Open San
 table.socs_day_events{width:100%!important;border-collapse:collapse!important;margin:0 0 12px!important}table.socs_day_events th{padding:8px!important;text-align:left!important;color:var(--red)!important;font-weight:700!important;background:var(--tint)!important}
 table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!important;vertical-align:top!important;font-size:13px!important}table.socs_day_events td.Timings{white-space:nowrap!important;width:120px!important;font-weight:700!important}table.socs_day_events td.Venue{width:160px!important;color:#666!important}table.socs_day_events td.Title{font-weight:700!important}table.socs_day_events span.canc{color:var(--red)!important;font-weight:700!important}a{color:var(--red)}.event-date{color:var(--red)!important;margin:14px 0 6px!important;font-size:17px!important}.event-item{display:flex;gap:16px;padding:10px 8px;border-bottom:1px solid #eee}.event-time{width:120px;flex:0 0 120px;font-weight:700;font-size:13px}.event-main{min-width:0}.event-title{font-weight:700;font-size:13px}.event-venue{margin-top:3px;color:#666;font-size:12px}
 @media(max-width:600px){.head{padding:12px 14px}.head h1{font-size:15px}#SOCSCalendar{padding:6px 10px 12px}table.socs_day_events td{font-size:12px!important;padding:7px 5px!important}table.socs_day_events td.Venue{width:auto!important}.head span{display:none}}
+
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:0}.column{min-width:0}.column+.column{border-left:1px solid var(--gold)}.column-head{background:var(--tint);color:var(--red);font-weight:700;letter-spacing:.06em;padding:10px 18px;border-bottom:1px solid #eee}.ics-list{padding:8px 18px 16px}.ics-date{color:var(--red);margin:12px 0 8px;font-size:18px;font-weight:700}.ics-item{padding:10px 8px;border-bottom:1px solid #eee}.ics-time{font-weight:700;font-size:13px}.ics-title{font-weight:700;font-size:13px;margin-top:2px}.ics-location{margin-top:3px;color:#666;font-size:12px}.ics-empty{padding:18px;color:#666;font-size:13px}
+@media(max-width:700px){.columns{grid-template-columns:1fr}.column+.column{border-left:0;border-top:1px solid var(--gold)}}
 </style></head><body>
-<div class="shell"><div class="card"><div class="head"><h1>UPCOMING EVENTS</h1><span>KING'S COLLEGE DOHA</span></div><div id="SOCSCalendar"></div></div></div>
+<div class="shell"><div class="card"><div class="head"><h1>UPCOMING EVENTS</h1><span>KING'S COLLEGE DOHA</span></div><div class="columns"><section class="column"><div class="column-head">EVENTS</div><div id="SOCSCalendar"></div></section><section class="column"><div class="column-head">SCHOOL CALENDAR</div><div id="ICSCalendar" class="ics-list"><div class="ics-empty">Loading calendar…</div></div></section></div></div></div>
 <script>var socsURL='https://www.socscms.com/socs/plugin/api.ashx?FT=&D=589-590-591-592-593-594-595-596-597-598-599-600-601-602-603&C=12769-12782-12756-12783-12774-12758-12781-12772-12767-12780-12757-12785-12778-12776-12759-12779-12770-12762-12777-12760-12773-12768-12786-12763-13996-12761-12764-12784-12765-12771-12766-12775&CC=&ET=Fixture-MultiSport-Training-Competition-SportEvent&Y=&H=&key=A27290A6-A93B-46E8-9E7A-FB53BED1AFE1';</script>
 <script src="https://www.socscms.com/socs/plugin/api.js"></script>
 <script>
@@ -122,6 +125,22 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
  const o=new MutationObserver(()=>setTimeout(diagnostic,100));
  o.observe(cal,{childList:true,subtree:true});
  [1000,3000,6000].forEach(ms=>setTimeout(diagnostic,ms));
+})();
+</script>
+<script>
+(function(){
+ const box=document.getElementById('ICSCalendar');
+ function esc(s){return String(s||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+ fetch('calendar.json?ts='+Date.now()).then(r=>{if(!r.ok)throw new Error();return r.json();}).then(data=>{
+   const events=(data.events||[]).slice(0,10);
+   if(!events.length){box.innerHTML='<div class="ics-empty">No upcoming calendar events.</div>';return;}
+   let out='',last='';
+   events.forEach(e=>{
+     if(e.date!==last){out+='<div class="ics-date">'+esc(e.date)+'</div>';last=e.date;}
+     out+='<div class="ics-item"><div class="ics-time">'+esc(e.time||'All day')+'</div><div class="ics-title">'+esc(e.title)+'</div>'+(e.location?'<div class="ics-location">'+esc(e.location)+'</div>':'')+'</div>';
+   });
+   box.innerHTML=out;
+ }).catch(()=>box.innerHTML='<div class="ics-empty">Calendar temporarily unavailable.</div>');
 })();
 </script>
 </body></html>
