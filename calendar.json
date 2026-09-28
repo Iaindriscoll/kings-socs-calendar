@@ -36,6 +36,13 @@
       "location": ""
     },
     {
+      "start": "2026-09-29T09:30:00+00:00",
+      "end": "2026-09-29T10:00:00+00:00",
+      "allDay": false,
+      "title": "Corinna and Iain",
+      "location": "Microsoft Teams Meeting"
+    },
+    {
       "start": "2026-09-29T10:30:00+00:00",
       "end": "2026-09-29T11:30:00+00:00",
       "allDay": false,
@@ -272,13 +279,6 @@
       "allDay": false,
       "title": "In-School Review of Digital Learning (DMS)",
       "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2027-03-28T13:00:00+00:00",
-      "end": "2027-03-28T14:00:00+00:00",
-      "allDay": false,
-      "title": "In-School Review of Specialist Areas (Inclusion; Arabic)",
-      "location": "Boardroom"
     }
   ]
 }
