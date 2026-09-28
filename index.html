@@ -150,23 +150,4 @@ table.socs_day_events td{padding:9px 8px!important;border-bottom:1px solid #eee!
  }).catch(()=>box.innerHTML='<div class="ics-empty">Calendar temporarily unavailable.</div>');
 })();
 </script>
-</body></html>,'m'));return m?m[1].trim():'';}
- function dt(v){if(!v)return null;const z=v.endsWith('Z'),s=v.replace(/Z$/,'');const m=s.match(/^(\\d{4})(\\d{2})(\\d{2})(?:T(\\d{2})(\\d{2})(\\d{2}))?/);if(!m)return null;return z?new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0))):new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0),+(m[6]||0));}
- function clean(v){return (v||'').replace(/\\\\n/g,' ').replace(/\\\\,/g,',').replace(/\\\\;/g,';');}
- fetch(feed).then(r=>{if(!r.ok)throw new Error();return r.text();}).then(raw=>{
-   raw=raw.replace(/\\r?\\n[ \\t]/g,'');
-   const now=new Date(), events=[];
-   (raw.match(/BEGIN:VEVENT[\\s\\S]*?END:VEVENT/g)||[]).forEach(b=>{
-     const start=dt(prop(b,'DTSTART')), end=dt(prop(b,'DTEND')); if(!start||((end||start)<now))return;
-     const allDay=!prop(b,'DTSTART').includes('T');
-     const date=start.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric',timeZone:'Asia/Qatar'});
-     const tm=d=>d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Qatar'});
-     events.push({start,date,time:allDay?'All day':tm(start)+(end?'–'+tm(end):''),title:clean(prop(b,'SUMMARY')),location:clean(prop(b,'LOCATION'))});
-   });
-   events.sort((a,b)=>a.start-b.start); const chosen=events.slice(0,10);
-   if(!chosen.length){box.innerHTML='<div class="ics-empty">No upcoming calendar events.</div>';return;}
-   let out='',last=''; chosen.forEach(e=>{if(e.date!==last){out+='<div class="ics-date">'+esc(e.date)+'</div>';last=e.date;}out+='<div class="ics-item"><div class="ics-time">'+esc(e.time)+'</div><div class="ics-title">'+esc(e.title)+'</div>'+(e.location?'<div class="ics-location">'+esc(e.location)+'</div>':'')+'</div>';}); box.innerHTML=out;
- }).catch(()=>box.innerHTML='<div class="ics-empty">Calendar temporarily unavailable.</div>');
-})();
-</script>
 </body></html>
