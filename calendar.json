@@ -1,88 +1,11 @@
 {
   "events": [
     {
-      "start": "2026-09-28T12:00:00+00:00",
-      "end": "2026-09-28T12:30:00+00:00",
-      "allDay": false,
-      "title": "Standard 1 & 2 review",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-09-28T13:30:00+00:00",
-      "end": "2026-09-28T14:00:00+00:00",
-      "allDay": false,
-      "title": "Cognita interview",
-      "location": ""
-    },
-    {
-      "start": "2026-09-28T16:00:00+00:00",
-      "end": "2026-09-28T16:45:00+00:00",
-      "allDay": false,
-      "title": "Kings College Doha Participation Discussion - Cognita Global Games",
-      "location": "ME Connect 2 (Dubai, AE)"
-    },
-    {
-      "start": "2026-09-28T16:00:00+00:00",
-      "end": "2026-09-28T16:30:00+00:00",
-      "allDay": false,
-      "title": "Cyprus Parent session",
-      "location": ""
-    },
-    {
       "start": "2026-09-29T08:00:00+00:00",
       "end": "2026-09-29T09:00:00+00:00",
       "allDay": false,
       "title": "Physical Tour | Lilyana Hailes | Year 7 AY 27-28",
       "location": ""
-    },
-    {
-      "start": "2026-09-29T09:30:00+00:00",
-      "end": "2026-09-29T10:00:00+00:00",
-      "allDay": false,
-      "title": "Corinna and Iain",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-09-29T10:30:00+00:00",
-      "end": "2026-09-29T11:30:00+00:00",
-      "allDay": false,
-      "title": "ESLT - A Al-Thumama Weekly Meeting",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2026-09-29T11:30:00+00:00",
-      "end": "2026-09-29T12:00:00+00:00",
-      "allDay": false,
-      "title": "Cognita baby sitting time",
-      "location": ""
-    },
-    {
-      "start": "2026-09-29T14:30:00+00:00",
-      "end": "2026-09-29T15:00:00+00:00",
-      "allDay": false,
-      "title": "Cognita baby sitting time.",
-      "location": ""
-    },
-    {
-      "start": "2026-09-30T07:00:00+00:00",
-      "end": "2026-09-30T15:00:00+00:00",
-      "allDay": false,
-      "title": "NPQH DAY",
-      "location": ""
-    },
-    {
-      "start": "2026-09-30T07:45:00+00:00",
-      "end": "2026-09-30T08:45:00+00:00",
-      "allDay": false,
-      "title": "Speech and Language Therapist - guest speaker",
-      "location": "TBD"
-    },
-    {
-      "start": "2026-09-30T12:00:00+00:00",
-      "end": "2026-09-30T12:30:00+00:00",
-      "allDay": false,
-      "title": "Standard 3 & 4 deadline",
-      "location": "Microsoft Teams Meeting"
     },
     {
       "start": "2026-09-30T13:00:00+00:00",
@@ -99,186 +22,18 @@
       "location": ""
     },
     {
-      "start": "2026-09-30T14:00:00+00:00",
-      "end": "2026-09-30T14:40:00+00:00",
+      "start": "2026-10-01T08:00:00+00:00",
+      "end": "2026-10-01T09:00:00+00:00",
       "allDay": false,
-      "title": "Amy and Iain Meeting",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-10-01T09:15:00+00:00",
-      "end": "2026-10-01T10:10:00+00:00",
-      "allDay": false,
-      "title": "Iain to watch NDA lesson",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-10-04T10:00:00+00:00",
-      "end": "2026-10-04T11:00:00+00:00",
-      "allDay": false,
-      "title": "Gaming / E-Sports Event: King's College Doha, Mesaimeer Campus",
-      "location": "King's College Doha - Mesaimeer Campus: https://share.google/kPldVNLeUzxeuVgxb"
-    },
-    {
-      "start": "2026-10-05T08:00:00+00:00",
-      "end": "2026-10-05T08:30:00+00:00",
-      "allDay": false,
-      "title": "Phonics Without the Confusion: How to Help at Home",
-      "location": "Atrium; Thumama"
-    },
-    {
-      "start": "2026-10-05T12:00:00+00:00",
-      "end": "2026-10-05T12:30:00+00:00",
-      "allDay": false,
-      "title": "Standard 8 & 10 deadline",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-10-06T08:00:00+00:00",
-      "end": "2026-10-06T09:00:00+00:00",
-      "allDay": false,
-      "title": "Physical Tour | Noah Elias and Sophia Elias | Year 6 and Year 8 AY 27-28",
+      "title": "Physical Tour | Sebastian Christopher | Year 7 AY 27-28",
       "location": ""
     },
     {
-      "start": "2026-10-06T10:00:00+00:00",
-      "end": "2026-10-06T10:30:00+00:00",
+      "start": "2026-10-04T08:00:00+00:00",
+      "end": "2026-10-04T09:00:00+00:00",
       "allDay": false,
-      "title": "Qatar Airways Group Desk Team",
+      "title": "Physical Tour | Aariz Sattar | FS1 term 2 AY 26-27",
       "location": ""
-    },
-    {
-      "start": "2026-10-06T16:00:00+00:00",
-      "end": "2026-10-06T17:00:00+00:00",
-      "allDay": false,
-      "title": "British Curriculum & GCSE Explained",
-      "location": "Theatre"
-    },
-    {
-      "start": "2026-10-07T13:00:00+00:00",
-      "end": "2026-10-07T14:00:00+00:00",
-      "allDay": false,
-      "title": "Physical Tour | Aish Asif | Year 7 AY 26-27",
-      "location": ""
-    },
-    {
-      "start": "2026-10-12T12:00:00+00:00",
-      "end": "2026-10-12T12:30:00+00:00",
-      "allDay": false,
-      "title": "Standard 5 & 7 deadline",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-10-13T16:00:00+00:00",
-      "end": "2026-10-13T17:00:00+00:00",
-      "allDay": false,
-      "title": "British Curriculum, A Levels & BTEC Explained",
-      "location": "Theatre"
-    },
-    {
-      "start": "2026-11-03T10:00:00+00:00",
-      "end": "2026-11-03T12:00:00+00:00",
-      "allDay": false,
-      "title": "Education Review Meeting Term 1 (formerly Holistic Education Communications Meeting)",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2026-11-03T13:45:00+00:00",
-      "end": "2026-11-03T14:15:00+00:00",
-      "allDay": false,
-      "title": "Addition & Subtraction for Year 1 and 2",
-      "location": "Atrium"
-    },
-    {
-      "start": "2026-11-05T17:30:00+00:00",
-      "end": "2026-11-05T18:00:00+00:00",
-      "allDay": false,
-      "title": "BCCQ Winter ball",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-11-06T00:00:00+00:00",
-      "end": "2026-11-07T00:00:00+00:00",
-      "allDay": true,
-      "title": "King's Garden Party",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2026-11-09T07:45:00+00:00",
-      "end": "2026-11-09T08:15:00+00:00",
-      "allDay": false,
-      "title": "Multiplication & Division for Year 3 & 4",
-      "location": "TBD"
-    },
-    {
-      "start": "2026-11-10T10:00:00+00:00",
-      "end": "2026-11-10T12:00:00+00:00",
-      "allDay": false,
-      "title": "In-School Review of Teaching & Learning, and Leadership of Teaching & Learning",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2026-11-11T16:00:00+00:00",
-      "end": "2026-11-11T17:00:00+00:00",
-      "allDay": false,
-      "title": "Mesaimeer Open Evening",
-      "location": "Atrium"
-    },
-    {
-      "start": "2026-12-01T10:00:00+00:00",
-      "end": "2026-12-01T12:00:00+00:00",
-      "allDay": false,
-      "title": "School Review Meeting Term 1 (formerly Board of Governors)",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2027-01-12T10:00:00+00:00",
-      "end": "2027-01-12T12:00:00+00:00",
-      "allDay": false,
-      "title": "Mid-Year Review of Academic Data & 'Voice of' Review",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2027-01-24T00:00:00+00:00",
-      "end": "2027-01-28T00:00:00+00:00",
-      "allDay": true,
-      "title": "H&S review",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2027-01-24T09:00:00+00:00",
-      "end": "2027-01-27T18:00:00+00:00",
-      "allDay": false,
-      "title": "External H&S Review | KCD",
-      "location": "KCD"
-    },
-    {
-      "start": "2027-01-28T10:00:00+00:00",
-      "end": "2027-01-28T12:00:00+00:00",
-      "allDay": false,
-      "title": "Education Review Meeting Term 2 (formerly Holistic Education Communications Meeting)",
-      "location": "Microsoft Teams Meeting"
-    },
-    {
-      "start": "2027-03-01T10:00:00+00:00",
-      "end": "2027-03-01T12:00:00+00:00",
-      "allDay": false,
-      "title": "School Review Meeting Term 2 (formerly Board of Governors)",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2027-03-28T10:00:00+00:00",
-      "end": "2027-03-28T12:00:00+00:00",
-      "allDay": false,
-      "title": "In-School School Improvement Review",
-      "location": "Boardroom"
-    },
-    {
-      "start": "2027-03-28T12:00:00+00:00",
-      "end": "2027-03-28T13:00:00+00:00",
-      "allDay": false,
-      "title": "In-School Review of Digital Learning (DMS)",
-      "location": "Microsoft Teams Meeting"
     }
   ]
 }
