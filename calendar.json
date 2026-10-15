@@ -27,6 +27,20 @@
       "allDay": false,
       "title": "Canceled: Physical Tour | Faye Kilpatrick | Year 12 AY 27-28",
       "location": ""
+    },
+    {
+      "start": "2026-11-01T13:00:00+00:00",
+      "end": "2026-11-01T14:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Nuha Shameel and Zahra Shameel | Year 4 and Year 7",
+      "location": ""
+    },
+    {
+      "start": "2026-11-05T08:00:00+00:00",
+      "end": "2026-11-05T09:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Abdullah Mahfuz | Year 8 AY 27-28",
+      "location": ""
     }
   ]
 }
