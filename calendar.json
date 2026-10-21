@@ -4,14 +4,14 @@
       "start": "2026-10-21T13:00:00+00:00",
       "end": "2026-10-21T14:00:00+00:00",
       "allDay": false,
-      "title": "Phyical Tour | Tallulah bland and Rafferty Bland | Year 5 and Year 7 AY 27-28",
+      "title": "Physical Tour | Kaison Bone |  Year 5 AY 27-28 |",
       "location": ""
     },
     {
       "start": "2026-10-21T13:00:00+00:00",
       "end": "2026-10-21T14:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Kaison Bone |  Year 5 AY 27-28 |",
+      "title": "Phyical Tour | Tallulah bland and Rafferty Bland | Year 5 and Year 7 AY 27-28",
       "location": ""
     },
     {
@@ -103,6 +103,13 @@
       "end": "2026-11-08T09:00:00+00:00",
       "allDay": false,
       "title": "Physical Tour | Hannah Alhamdani | FS1 AY 28-29",
+      "location": ""
+    },
+    {
+      "start": "2026-11-08T08:00:00+00:00",
+      "end": "2026-11-08T09:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Maeva Zoey | FS1 AY 27-28",
       "location": ""
     },
     {
