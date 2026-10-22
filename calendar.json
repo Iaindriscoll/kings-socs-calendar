@@ -60,14 +60,14 @@
       "start": "2026-11-03T08:00:00+00:00",
       "end": "2026-11-03T09:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Muhammad Izhaan Akhtar | FS1 AY 27-28",
+      "title": "Physical Tour | Muhammad Syed and Mustafa Syed | FS1 AY 26-27 and AY 28-29",
       "location": ""
     },
     {
       "start": "2026-11-03T08:00:00+00:00",
       "end": "2026-11-03T09:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Muhammad Syed and Mustafa Syed | FS1 AY 26-27 and AY 28-29",
+      "title": "Physical Tour | Muhammad Izhaan Akhtar | FS1 AY 27-28",
       "location": ""
     },
     {
@@ -103,6 +103,13 @@
       "end": "2026-11-08T09:00:00+00:00",
       "allDay": false,
       "title": "Physical Tour | Maeva Zoey | FS1 AY 27-28",
+      "location": ""
+    },
+    {
+      "start": "2026-11-09T09:00:00+00:00",
+      "end": "2026-11-09T10:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Ella Poll | FS2 AY 27-28",
       "location": ""
     },
     {
