@@ -25,14 +25,21 @@
       "start": "2026-11-02T09:00:00+00:00",
       "end": "2026-11-02T10:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Mikaela Lu | FS1 AY 27-28",
+      "title": "Physical Tour | Aslan Ertekin |FS1 AY 27-28",
       "location": ""
     },
     {
       "start": "2026-11-02T09:00:00+00:00",
       "end": "2026-11-02T10:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Aslan Ertekin |FS1 AY 27-28",
+      "title": "Physical Tour | Mikaela Lu | FS1 AY 27-28",
+      "location": ""
+    },
+    {
+      "start": "2026-11-02T13:00:00+00:00",
+      "end": "2026-11-02T14:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Emma Kivela | Year 9 | Term 2 AY 26-27",
       "location": ""
     },
     {
@@ -53,14 +60,14 @@
       "start": "2026-11-04T08:00:00+00:00",
       "end": "2026-11-04T09:00:00+00:00",
       "allDay": false,
-      "title": "Physical tour | Dania Ahmed | FS2 AY 27-28",
+      "title": "Physical Tour | Fares Sabbah | FS2 AY 26-27",
       "location": ""
     },
     {
       "start": "2026-11-04T08:00:00+00:00",
       "end": "2026-11-04T09:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Fares Sabbah | FS2 AY 26-27",
+      "title": "Physical tour | Dania Ahmed | FS2 AY 27-28",
       "location": ""
     },
     {
@@ -95,14 +102,21 @@
       "start": "2026-11-09T09:00:00+00:00",
       "end": "2026-11-09T10:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Ella Poll | FS2 AY 27-28",
+      "title": "Physical Tour | Arianna Nairi | FS1 AY 27-28",
       "location": ""
     },
     {
       "start": "2026-11-09T09:00:00+00:00",
       "end": "2026-11-09T10:00:00+00:00",
       "allDay": false,
-      "title": "Physical Tour | Arianna Nairi | FS1 AY 27-28",
+      "title": "Physical Tour | Ella Poll | FS2 AY 27-28",
+      "location": ""
+    },
+    {
+      "start": "2026-11-10T08:00:00+00:00",
+      "end": "2026-11-10T09:00:00+00:00",
+      "allDay": false,
+      "title": "Physical Tour | Shaikha Al-Khalifa | FS1 AY 27-28",
       "location": ""
     },
     {
